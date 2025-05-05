@@ -1,10 +1,21 @@
 package jFrame;
 
-public class Exercicio01 {
+import javax.swing.JFrame;
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+public class Exercicio01 extends JFrame 
+{
 
+	public Exercicio01() 
+	{
+		setTitle("Bem-vindo");
+		setSize(1920, 1080);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		setLocationRelativeTo(null);
+		setVisible(true);
 	}
 
+	public static void main(String[] args) 
+	{
+		new Exercicio01();
+	}
 }
