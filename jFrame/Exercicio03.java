@@ -8,11 +8,11 @@ public class Exercicio03 extends JFrame
 	public Exercicio03() 
 	{
 		setTitle("Imagem na Janela");
-		setSize(600, 400);
+		setSize(1920, 1080);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		ImageIcon icone = new ImageIcon("src/img/download.jpg");
+		ImageIcon icone = new ImageIcon("src/img/dedofudido.jpg");
 
 		JLabel labelImagem = new JLabel(icone);
 		labelImagem.setBounds(50, 50, icone.getIconWidth(), icone.getIconHeight());
