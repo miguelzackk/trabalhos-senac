@@ -12,7 +12,7 @@ public class Exercicio03 extends JFrame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setLayout(null);
 
-		ImageIcon icone = new ImageIcon("src/img/dedofudido.jpg");
+		ImageIcon icone = new ImageIcon("src/img/291.png");
 
 		JLabel labelImagem = new JLabel(icone);
 		labelImagem.setBounds(50, 50, icone.getIconWidth(), icone.getIconHeight());

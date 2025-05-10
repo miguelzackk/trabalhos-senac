@@ -68,8 +68,7 @@ public class Exercicio06 extends JFrame
 		add(resultado);
 	}
 
-	public static void main(String[] args) 
-	{
+	public static void main(String[] args) {
 		SwingUtilities.invokeLater(() -> new Exercicio06().setVisible(true));
 	}
 }

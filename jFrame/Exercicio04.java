@@ -40,7 +40,7 @@ public class Exercicio04 extends JFrame {
        
         sobreItem.addActionListener(e -> {
             JOptionPane.showMessageDialog(this,
-                "Autor: Miguel\nProjeto: Menu Simples em Java\nAno: 2025",
+                "Autor: Migu\nProjeto: Menu Simples em Java\nAno: 2025",
                 "Sobre", JOptionPane.INFORMATION_MESSAGE);
         });
 

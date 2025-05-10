@@ -12,7 +12,7 @@ public class Exercicio08 extends JFrame
     	{
         "src/img/download.jpg",
         "src/img/dedofudido.jpg",
-        "src/img/img3.jpg"
+        "src/img/291.png"
     };
     private int indiceAtual = 0;
 
