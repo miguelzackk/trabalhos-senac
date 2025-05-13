@@ -10,6 +10,8 @@ public class Pessoa {
         this.idade = idade;
         this.email = email;
     }
+    
+    //teste
 
     // GETs
     public String getNome() { return nome; }
