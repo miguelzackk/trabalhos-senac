@@ -8,7 +8,7 @@ public class CadastroDespesaFrame extends JFrame {
     private JComboBox<String> categoriaBox;
     private JTextField valorField;
     private SistemaFinanceiro sistema;
-
+//tentar arrumar resolução
     public CadastroDespesaFrame(SistemaFinanceiro sistema) {
         this.sistema = sistema;
         setTitle("Cadastro de Despesa");
