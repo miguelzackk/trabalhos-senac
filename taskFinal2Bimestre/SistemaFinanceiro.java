@@ -10,7 +10,6 @@ public class SistemaFinanceiro {
     public void adicionarCategoria(Categoria categoria) {
         categorias.add(categoria);
     }
-
     public void adicionarDespesa(Despesa despesa) {
         despesas.add(despesa);
         verificarLimite(despesa.getCategoria());

@@ -35,7 +35,7 @@ public class LoginFrame extends JFrame {
                 String usuario = userField.getText();
                 String senha = new String(passField.getPassword());
 
-                if (usuario.equals("admin") && senha.equals("123")) {
+                if (usuario.equals("123") && senha.equals("123")) {
                     new DashboardFrame(sistema);
                     dispose();
                 } else {

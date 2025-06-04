@@ -1,15 +1,12 @@
 package taskFinal2Bimestre;
-
 import javax.swing.*;
-import java.awt.event.*;
 
 public class CadastroCategoriaFrame extends JFrame {
-    private JTextField nomeField;
-    private JTextField limiteField;
     private SistemaFinanceiro sistema;
 
     public CadastroCategoriaFrame(SistemaFinanceiro sistema) {
         this.sistema = sistema;
+
         setTitle("Cadastro de Categoria");
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -19,24 +16,24 @@ public class CadastroCategoriaFrame extends JFrame {
         nomeLabel.setBounds(10, 10, 80, 25);
         add(nomeLabel);
 
-        nomeField = new JTextField();
+        JTextField nomeField = new JTextField();
         nomeField.setBounds(100, 10, 160, 25);
         add(nomeField);
 
         JLabel limiteLabel = new JLabel("Limite:");
-        limiteLabel.setBounds(10, 40, 80, 25);
+        limiteLabel.setBounds(10, 50, 80, 25);
         add(limiteLabel);
 
-        limiteField = new JTextField();
-        limiteField.setBounds(100, 40, 160, 25);
+        JTextField limiteField = new JTextField();
+        limiteField.setBounds(100, 50, 160, 25);
         add(limiteField);
 
         JButton salvarBtn = new JButton("Salvar");
-        salvarBtn.setBounds(100, 80, 80, 25);
+        salvarBtn.setBounds(100, 100, 80, 25);
         add(salvarBtn);
 
-        salvarBtn.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
+        salvarBtn.addActionListener(e -> {
+            try {
                 String nome = nomeField.getText();
                 double limite = Double.parseDouble(limiteField.getText());
 
@@ -45,10 +42,11 @@ public class CadastroCategoriaFrame extends JFrame {
 
                 JOptionPane.showMessageDialog(null, "Categoria adicionada com sucesso!");
                 dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(null, "Digite um valor numérico válido para o limite.");
             }
         });
 
         setVisible(true);
     }
 }
-
