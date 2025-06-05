@@ -7,11 +7,16 @@ public class CadastroOrcamentoFrame extends JFrame {
 
     public CadastroOrcamentoFrame(SistemaFinanceiro sistema) {
         this.sistema = sistema;
-
         setTitle("Cadastro de Orçamento");
-        setSize(300, 200);
+        setSize(300, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
+
+        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png")
+                .getImage().getScaledInstance(100, 50, java.awt.Image.SCALE_SMOOTH));
+        JLabel imageLabel = new JLabel(icon);
+        imageLabel.setBounds(10, 200, 100, 50);
+        add(imageLabel);
 
         JLabel categoriaLabel = new JLabel("Categoria:");
         categoriaLabel.setBounds(10, 20, 80, 25);
@@ -54,4 +59,3 @@ public class CadastroOrcamentoFrame extends JFrame {
         setVisible(true);
     }
 }
-

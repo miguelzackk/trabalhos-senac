@@ -12,6 +12,11 @@ public class DashboardFrame extends JFrame {
 		setSize(600, 600);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setLayout(null);
+        // Adicionando uma imagem obrigatória no JFrame
+        ImageIcon icon = new ImageIcon("src/img/iconDespesas.png"); // Caminho da imagem
+        JLabel imageLabel = new JLabel(icon);
+        imageLabel.setBounds(10, 130, 100, 50); // Ajuste o tamanho e posição conforme necessário
+        add(imageLabel);
 
 		int y = 20;
 

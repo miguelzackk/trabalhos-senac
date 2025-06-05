@@ -16,6 +16,11 @@ public class ListagemCategoriaFrame extends JFrame {
         setSize(500, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
+        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconCategoria.png")
+                .getImage().getScaledInstance(100, 50, java.awt.Image.SCALE_SMOOTH));
+        JLabel imageLabel = new JLabel(icon);
+        imageLabel.setBounds(10, 200, 100, 50);
+        add(imageLabel);
 
         String[] colunas = {"Nome", "Limite"};
         modelo = new DefaultTableModel(colunas, 0);

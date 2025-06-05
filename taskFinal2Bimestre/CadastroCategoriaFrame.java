@@ -1,4 +1,5 @@
 package taskFinal2Bimestre;
+
 import javax.swing.*;
 
 public class CadastroCategoriaFrame extends JFrame {
@@ -6,11 +7,16 @@ public class CadastroCategoriaFrame extends JFrame {
 
     public CadastroCategoriaFrame(SistemaFinanceiro sistema) {
         this.sistema = sistema;
-
         setTitle("Cadastro de Categoria");
-        setSize(300, 200);
+        setSize(300, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
+
+        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconCategoria.png")
+                .getImage().getScaledInstance(100, 50, java.awt.Image.SCALE_SMOOTH));
+        JLabel imageLabel = new JLabel(icon);
+        imageLabel.setBounds(10, 200, 100, 50);
+        add(imageLabel);
 
         JLabel nomeLabel = new JLabel("Nome:");
         nomeLabel.setBounds(10, 10, 80, 25);

@@ -8,6 +8,12 @@ public class ConfiguracoesPerfilFrame extends JFrame {
         setSize(300, 200);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
+        // Adicionando uma imagem obrigatória no JFrame
+        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconPerfil.png")
+                .getImage().getScaledInstance(100, 50, java.awt.Image.SCALE_SMOOTH));
+        JLabel imageLabel = new JLabel(icon);
+        imageLabel.setBounds(10, 200, 100, 50);
+        add(imageLabel);
 
         JLabel nomeLabel = new JLabel("Nome:");
         nomeLabel.setBounds(10, 20, 80, 25);
