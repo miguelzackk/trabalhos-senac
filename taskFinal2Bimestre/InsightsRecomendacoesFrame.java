@@ -1,9 +1,9 @@
 package taskFinal2Bimestre;
 
-import java.awt.Image;
-
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 
 public class InsightsRecomendacoesFrame extends JFrame {
     private SistemaFinanceiro sistema;
@@ -12,50 +12,51 @@ public class InsightsRecomendacoesFrame extends JFrame {
         this.sistema = sistema;
 
         setTitle("Insights e Recomendações");
-        setSize(500, 400);
+        setSize(520, 400);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        ImageIcon originalIcon = new ImageIcon(
-				"D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconInsight.png");
-		Image img = originalIcon.getImage();
 
-		// Dimensões originais
-		int imgW = originalIcon.getIconWidth();
-		int imgH = originalIcon.getIconHeight();
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        mainPanel.setBackground(Color.WHITE);
 
-		// Limites máximos
-		int maxW = 150;
-		int maxH = 100;
-
-		// Escala proporcional
-		double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
-		int newW = (int) (imgW * scale);
-		int newH = (int) (imgH * scale);
-
-		// Redimensiona imagem
-		Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-		ImageIcon scaledIcon = new ImageIcon(scaledImg);
-
-		// Centralizar horizontalmente
-		int x = (getWidth() - newW) / 2;
-
-		// Posicionar imagem
-		JLabel imageLabel = new JLabel(scaledIcon);
-		imageLabel.setBounds(x, 240, newW, newH); // Parte inferior
-		add(imageLabel);
-
-        String[] colunas = {"Insight", "Sugestão"};
-        DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
+        // Colunas e modelo da tabela
+        String[] colunas = { "Insight", "Sugestão" };
+        DefaultTableModel modelo = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false; // tabela somente leitura
+            }
+        };
 
         for (Insight i : sistema.getInsights()) {
-            Object[] linha = {i.getMensagem(), i.getSugestao()};
+            Object[] linha = { i.getMensagem(), i.getSugestao() };
             modelo.addRow(linha);
         }
 
         JTable tabela = new JTable(modelo);
-        JScrollPane scroll = new JScrollPane(tabela);
-        add(scroll);
+        tabela.setFillsViewportHeight(true);
+        tabela.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tabela.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+        tabela.setRowHeight(25);
 
+        JScrollPane scroll = new JScrollPane(tabela);
+        mainPanel.add(scroll, BorderLayout.CENTER);
+
+        // Imagem redimensionada centralizada abaixo da tabela
+        ImageIcon originalIcon = new ImageIcon(
+            "D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconInsight.png");
+        Image img = originalIcon.getImage();
+        int maxW = 150, maxH = 100;
+        double scale = Math.min((double) maxW / originalIcon.getIconWidth(), (double) maxH / originalIcon.getIconHeight());
+        Image scaledImg = img.getScaledInstance((int)(originalIcon.getIconWidth() * scale), (int)(originalIcon.getIconHeight() * scale), Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.WHITE);
+        imagePanel.add(imageLabel);
+        mainPanel.add(imagePanel, BorderLayout.SOUTH);
+
+        add(mainPanel);
         setVisible(true);
     }
 }
-

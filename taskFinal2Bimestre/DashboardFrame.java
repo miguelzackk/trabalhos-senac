@@ -1,118 +1,122 @@
 package taskFinal2Bimestre;
 
-import java.awt.Image;
-
 import javax.swing.*;
+import java.awt.*;
 
 public class DashboardFrame extends JFrame {
-	private SistemaFinanceiro sistema;
+    private SistemaFinanceiro sistema;
 
-	public DashboardFrame(SistemaFinanceiro sistema) {
-		this.sistema = sistema;
+    public DashboardFrame(SistemaFinanceiro sistema) {
+        this.sistema = sistema;
 
-		setTitle("Dashboard - Sistema Financeiro");
-		setSize(600, 600);
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setLayout(null);
-        // Adicionando uma imagem obrigatória no JFrame
-		ImageIcon originalIcon = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconHome.jpg");
-		Image img = originalIcon.getImage();
+        setTitle("Dashboard - Sistema Financeiro");
+        setSize(600, 600);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		int imgW = originalIcon.getIconWidth();
-		int imgH = originalIcon.getIconHeight();
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+        mainPanel.setBackground(Color.WHITE);
 
-		int maxW = 150;
-		int maxH = 100;
+        // Imagem topo centralizada
+        ImageIcon originalIcon = new ImageIcon(
+                "D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconHome.jpg");
+        Image img = originalIcon.getImage();
 
-		double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
-		int newW = (int) (imgW * scale);
-		int newH = (int) (imgH * scale);
+        int maxW = 150;
+        int maxH = 100;
 
-		Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-		ImageIcon scaledIcon = new ImageIcon(scaledImg);
+        double scale = Math.min((double) maxW / originalIcon.getIconWidth(),
+                (double) maxH / originalIcon.getIconHeight());
+        Image scaledImg = img.getScaledInstance((int) (originalIcon.getIconWidth() * scale),
+                (int) (originalIcon.getIconHeight() * scale), Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.WHITE);
+        imagePanel.add(imageLabel);
+        mainPanel.add(imagePanel, BorderLayout.NORTH);
 
-		int x = (600 - newW) / 2;  // centraliza horizontalmente com tamanho fixo do JFrame
-		int y = 600 - newH - 50;   // desce para quase o final da janela
+        // Painel central para botões - GridBag para flexibilidade
+        JPanel buttonsPanel = new JPanel(new GridBagLayout());
+        buttonsPanel.setBackground(Color.WHITE);
 
-		JLabel imageLabel = new JLabel(scaledIcon);
-		imageLabel.setBounds(x, y, newW, newH);
-		add(imageLabel);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.weightx = 1.0;
+        gbc.gridx = 0;
 
+        Font btnFont = new Font("Segoe UI", Font.BOLD, 14);
 
-		int y1 = 20;
+        int row = 0;
 
-	
-		JButton addCategoriaBtn = new JButton("Adicionar Categoria");
-		addCategoriaBtn.setBounds(50, y1, 200, 30);
-		add(addCategoriaBtn);
-		addCategoriaBtn.addActionListener(e -> new CadastroCategoriaFrame(sistema));
+        JButton addCategoriaBtn = createButton("Adicionar Categoria", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(addCategoriaBtn, gbc);
+        addCategoriaBtn.addActionListener(e -> new CadastroCategoriaFrame(sistema));
 
-		JButton listCategoriaBtn = new JButton("Listar Categorias");
-		listCategoriaBtn.setBounds(300, y1, 200, 30);
-		add(listCategoriaBtn);
-		listCategoriaBtn.addActionListener(e -> new ListagemCategoriaFrame(sistema));
+        JButton listCategoriaBtn = createButton("Listar Categorias", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(listCategoriaBtn, gbc);
+        listCategoriaBtn.addActionListener(e -> new ListagemCategoriaFrame(sistema));
 
-		y1 += 50;
+        JButton addDespesaBtn = createButton("Adicionar Despesa", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(addDespesaBtn, gbc);
+        addDespesaBtn.addActionListener(e -> new CadastroDespesaFrame(sistema));
 
-	
-		JButton addDespesaBtn = new JButton("Adicionar Despesa");
-		addDespesaBtn.setBounds(50, y1, 200, 30);
-		add(addDespesaBtn);
-		addDespesaBtn.addActionListener(e -> new CadastroDespesaFrame(sistema));
+        JButton listDespesaBtn = createButton("Listar Despesas", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(listDespesaBtn, gbc);
+        listDespesaBtn.addActionListener(e -> new ListagemDespesaFrame(sistema));
 
-		JButton listDespesaBtn = new JButton("Listar Despesas");
-		listDespesaBtn.setBounds(300, y1, 200, 30);
-		add(listDespesaBtn);
-		listDespesaBtn.addActionListener(e -> new ListagemDespesaFrame(sistema));
+        JButton addOrcamentoBtn = createButton("Adicionar Orçamento", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(addOrcamentoBtn, gbc);
+        addOrcamentoBtn.addActionListener(e -> new CadastroOrcamentoFrame(sistema));
 
-		y1 += 50;
+        JButton listOrcamentoBtn = createButton("Listar Orçamentos", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(listOrcamentoBtn, gbc);
+        listOrcamentoBtn.addActionListener(e -> new ListagemOrcamentoFrame(sistema));
 
-		
-		JButton addOrcamentoBtn = new JButton("Adicionar Orçamento");
-		addOrcamentoBtn.setBounds(50, y1, 200, 30);
-		add(addOrcamentoBtn);
-		addOrcamentoBtn.addActionListener(e -> new CadastroOrcamentoFrame(sistema));
+        JButton relatorioBtn = createButton("Ver Relatório de Gastos", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(relatorioBtn, gbc);
+        relatorioBtn.addActionListener(e -> new RelatorioGastosFrame(sistema));
 
-		JButton listOrcamentoBtn = new JButton("Listar Orçamentos");
-		listOrcamentoBtn.setBounds(300, y1, 200, 30);
-		add(listOrcamentoBtn);
-		listOrcamentoBtn.addActionListener(e -> new ListagemOrcamentoFrame(sistema));
+        JButton insightsBtn = createButton("Ver Insights e Recomendações", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(insightsBtn, gbc);
+        insightsBtn.addActionListener(e -> new InsightsRecomendacoesFrame(sistema));
 
-		y1 += 50;
+        JButton configBtn = createButton("Configurações de Perfil", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(configBtn, gbc);
+        configBtn.addActionListener(e -> new ConfiguracoesPerfilFrame());
 
-		
-		JButton relatorioBtn = new JButton("Ver Relatório de Gastos");
-		relatorioBtn.setBounds(50, y1, 450, 30);
-		add(relatorioBtn);
-		relatorioBtn.addActionListener(e -> new RelatorioGastosFrame(sistema));
+        JButton logoutBtn = createButton("Logout", btnFont);
+        gbc.gridy = row++;
+        buttonsPanel.add(logoutBtn, gbc);
+        logoutBtn.addActionListener(e -> {
+            new LoginFrame(sistema);
+            dispose();
+        });
 
-		y1 += 50;
+        mainPanel.add(buttonsPanel, BorderLayout.CENTER);
 
-		
-		JButton insightsBtn = new JButton("Ver Insights e Recomendações");
-		insightsBtn.setBounds(50, y1, 450, 30);
-		add(insightsBtn);
-		insightsBtn.addActionListener(e -> new InsightsRecomendacoesFrame(sistema));
+        add(mainPanel);
+        setVisible(true);
+    }
 
-		y1 += 50;
-
-		
-		JButton configBtn = new JButton("Configurações de Perfil");
-		configBtn.setBounds(50, y1, 450, 30);
-		add(configBtn);
-		configBtn.addActionListener(e -> new ConfiguracoesPerfilFrame());
-
-		y1 += 50;
-
-		
-		JButton logoutBtn = new JButton("Logout");
-		logoutBtn.setBounds(50, y1, 450, 30);
-		add(logoutBtn);
-		logoutBtn.addActionListener(e -> {
-			new LoginFrame(sistema);
-			dispose();
-		});
-
-		setVisible(true);
-	}
+    // Método separado para criar botões
+    private JButton createButton(String text, Font font) {
+        JButton btn = new JButton(text);
+        btn.setBackground(new Color(0, 153, 76));
+        btn.setForeground(Color.WHITE);
+        btn.setFocusPainted(false);
+        btn.setFont(font);
+        btn.setPreferredSize(new Dimension(450, 40));
+        return btn;
+    }
 }

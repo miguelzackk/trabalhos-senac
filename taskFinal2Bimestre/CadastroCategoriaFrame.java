@@ -1,72 +1,82 @@
 package taskFinal2Bimestre;
 
-import java.awt.Image;
-
 import javax.swing.*;
+import java.awt.*;
 
 public class CadastroCategoriaFrame extends JFrame {
     private SistemaFinanceiro sistema;
 
     public CadastroCategoriaFrame(SistemaFinanceiro sistema) {
         this.sistema = sistema;
+
         setTitle("Cadastro de Categoria");
-        setSize(300, 400);
+        setSize(350, 350);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(null);
 
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        mainPanel.setBackground(Color.WHITE);
 
-        ImageIcon originalIcon = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconCategoria.png");
-        Image img = originalIcon.getImage();
+        // Painel do formulário com GridBagLayout
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Dimensões originais
-        int imgW = originalIcon.getIconWidth();
-        int imgH = originalIcon.getIconHeight();
-
-        // Limites máximos
-        int maxW = 150;
-        int maxH = 100;
-
-        // Escala proporcional
-        double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
-        int newW = (int) (imgW * scale);
-        int newH = (int) (imgH * scale);
-
-        // Redimensiona imagem
-        Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImg);
-
-        // Centralizar horizontalmente
-        int x = (getWidth() - newW) / 2;
-
-        // Posicionar imagem
-        JLabel imageLabel = new JLabel(scaledIcon);
-        imageLabel.setBounds(x, 240, newW, newH); // Parte inferior
-        add(imageLabel);
-
+        // Label Nome
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
         JLabel nomeLabel = new JLabel("Nome:");
-        nomeLabel.setBounds(10, 10, 80, 25);
-        add(nomeLabel);
+        nomeLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(nomeLabel, gbc);
 
+        // Campo Nome
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
         JTextField nomeField = new JTextField();
-        nomeField.setBounds(100, 10, 160, 25);
-        add(nomeField);
+        nomeField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        nomeField.setPreferredSize(new Dimension(200, 25));
+        formPanel.add(nomeField, gbc);
 
+        // Label Limite
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0;
         JLabel limiteLabel = new JLabel("Limite:");
-        limiteLabel.setBounds(10, 50, 80, 25);
-        add(limiteLabel);
+        limiteLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(limiteLabel, gbc);
 
+        // Campo Limite
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
         JTextField limiteField = new JTextField();
-        limiteField.setBounds(100, 50, 160, 25);
-        add(limiteField);
+        limiteField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        limiteField.setPreferredSize(new Dimension(200, 25));
+        formPanel.add(limiteField, gbc);
 
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Botão Salvar com cor verde (semelhante aos botões de editar)
         JButton salvarBtn = new JButton("Salvar");
-        salvarBtn.setBounds(100, 100, 80, 25);
-        add(salvarBtn);
-
+        salvarBtn.setBackground(new Color(0, 153, 76));
+        salvarBtn.setForeground(Color.WHITE);
+        salvarBtn.setFocusPainted(false);
+        salvarBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        salvarBtn.setPreferredSize(new Dimension(100, 30));
         salvarBtn.addActionListener(e -> {
             try {
-                String nome = nomeField.getText();
-                double limite = Double.parseDouble(limiteField.getText());
+                String nome = nomeField.getText().trim();
+                double limite = Double.parseDouble(limiteField.getText().trim());
+
+                if (nome.isEmpty()) {
+                    JOptionPane.showMessageDialog(null, "O nome da categoria não pode estar vazio.");
+                    return;
+                }
 
                 Categoria categoria = new Categoria(nome, limite);
                 sistema.adicionarCategoria(categoria);
@@ -78,6 +88,28 @@ public class CadastroCategoriaFrame extends JFrame {
             }
         });
 
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(Color.WHITE);
+        btnPanel.add(salvarBtn);
+        mainPanel.add(btnPanel, BorderLayout.SOUTH);
+
+        // Imagem redimensionada e centralizada acima do botão
+        ImageIcon originalIcon = new ImageIcon(
+                "D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconCategoria.png");
+        Image img = originalIcon.getImage();
+        int maxW = 150, maxH = 100;
+        double scale = Math.min((double) maxW / originalIcon.getIconWidth(),
+                (double) maxH / originalIcon.getIconHeight());
+        Image scaledImg = img.getScaledInstance((int) (originalIcon.getIconWidth() * scale),
+                (int) (originalIcon.getIconHeight() * scale), Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.WHITE);
+        imagePanel.add(imageLabel);
+
+        mainPanel.add(imagePanel, BorderLayout.NORTH);
+
+        add(mainPanel);
         setVisible(true);
     }
 }

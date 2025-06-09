@@ -1,9 +1,7 @@
 package taskFinal2Bimestre;
 
 import javax.swing.*;
-
-import java.awt.Image;
-import java.awt.event.*;
+import java.awt.*;
 import java.util.Date;
 
 public class CadastroDespesaFrame extends JFrame {
@@ -13,75 +11,117 @@ public class CadastroDespesaFrame extends JFrame {
 
     public CadastroDespesaFrame(SistemaFinanceiro sistema) {
         this.sistema = sistema;
+
         setTitle("Cadastro de Despesa");
-        setSize(300, 400);
+        setSize(350, 400);
+        setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(null);
 
-        ImageIcon originalIcon = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png");
-        Image img = originalIcon.getImage();
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        mainPanel.setBackground(Color.WHITE);
 
-        // Dimensões originais
-        int imgW = originalIcon.getIconWidth();
-        int imgH = originalIcon.getIconHeight();
+        // Painel do formulário com GridBagLayout
+        JPanel formPanel = new JPanel(new GridBagLayout());
+        formPanel.setBackground(Color.WHITE);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(10, 10, 10, 10);
+        gbc.fill = GridBagConstraints.HORIZONTAL;
 
-        // Limites máximos
-        int maxW = 150;
-        int maxH = 100;
-
-        // Escala proporcional
-        double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
-        int newW = (int) (imgW * scale);
-        int newH = (int) (imgH * scale);
-
-        // Redimensiona imagem
-        Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-        ImageIcon scaledIcon = new ImageIcon(scaledImg);
-
-        // Centralizar horizontalmente
-        int x = (getWidth() - newW) / 2;
-
-        // Posicionar imagem
-        JLabel imageLabel = new JLabel(scaledIcon);
-        imageLabel.setBounds(x, 240, newW, newH); // Parte inferior
-        add(imageLabel);
-
+        // Label Categoria
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        gbc.weightx = 0;
         JLabel categoriaLabel = new JLabel("Categoria:");
-        categoriaLabel.setBounds(10, 10, 80, 25);
-        add(categoriaLabel);
+        categoriaLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(categoriaLabel, gbc);
 
+        // ComboBox Categoria
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        gbc.weightx = 1.0;
         categoriaBox = new JComboBox<>();
         for (Categoria cat : sistema.getCategorias()) {
             categoriaBox.addItem(cat.getNome());
         }
-        categoriaBox.setBounds(100, 10, 160, 25);
-        add(categoriaBox);
+        categoriaBox.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        categoriaBox.setPreferredSize(new Dimension(200, 25));
+        formPanel.add(categoriaBox, gbc);
 
+        // Label Valor
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.weightx = 0;
         JLabel valorLabel = new JLabel("Valor:");
-        valorLabel.setBounds(10, 50, 80, 25);
-        add(valorLabel);
+        valorLabel.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        formPanel.add(valorLabel, gbc);
 
+        // Campo Valor
+        gbc.gridx = 1;
+        gbc.gridy = 1;
+        gbc.weightx = 1.0;
         valorField = new JTextField();
-        valorField.setBounds(100, 50, 160, 25);
-        add(valorField);
+        valorField.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        valorField.setPreferredSize(new Dimension(200, 25));
+        formPanel.add(valorField, gbc);
 
+        mainPanel.add(formPanel, BorderLayout.CENTER);
+
+        // Botão Salvar verde, com fonte em negrito
         JButton salvarBtn = new JButton("Salvar");
-        salvarBtn.setBounds(100, 90, 80, 25);
-        add(salvarBtn);
+        salvarBtn.setBackground(new Color(0, 153, 76));
+        salvarBtn.setForeground(Color.WHITE);
+        salvarBtn.setFocusPainted(false);
+        salvarBtn.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        salvarBtn.setPreferredSize(new Dimension(100, 30));
 
         salvarBtn.addActionListener(e -> {
-            String categoriaNome = (String) categoriaBox.getSelectedItem();
-            Categoria categoria = sistema.getCategorias().stream()
-                    .filter(c -> c.getNome().equals(categoriaNome))
-                    .findFirst().orElse(null);
+            try {
+                String categoriaNome = (String) categoriaBox.getSelectedItem();
+                Categoria categoria = sistema.getCategorias().stream()
+                        .filter(c -> c.getNome().equals(categoriaNome))
+                        .findFirst().orElse(null);
 
-            double valor = Double.parseDouble(valorField.getText());
-            sistema.adicionarDespesa(new Despesa(categoria, valor, new Date()));
+                if (categoria == null) {
+                    JOptionPane.showMessageDialog(this, "Categoria inválida.");
+                    return;
+                }
 
-            JOptionPane.showMessageDialog(null, "Despesa adicionada com sucesso!");
-            dispose();
+                double valor = Double.parseDouble(valorField.getText().trim());
+                if (valor <= 0) {
+                    JOptionPane.showMessageDialog(this, "Digite um valor positivo para a despesa.");
+                    return;
+                }
+
+                sistema.adicionarDespesa(new Despesa(categoria, valor, new Date()));
+                JOptionPane.showMessageDialog(this, "Despesa adicionada com sucesso!");
+                dispose();
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Digite um valor numérico válido para o valor.");
+            }
         });
 
+        JPanel btnPanel = new JPanel();
+        btnPanel.setBackground(Color.WHITE);
+        btnPanel.add(salvarBtn);
+        mainPanel.add(btnPanel, BorderLayout.SOUTH);
+
+        // Imagem redimensionada no topo, centralizada
+        ImageIcon originalIcon = new ImageIcon(
+                "D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png");
+        Image img = originalIcon.getImage();
+        int maxW = 150, maxH = 100;
+        double scale = Math.min((double) maxW / originalIcon.getIconWidth(),
+                (double) maxH / originalIcon.getIconHeight());
+        Image scaledImg = img.getScaledInstance((int) (originalIcon.getIconWidth() * scale),
+                (int) (originalIcon.getIconHeight() * scale), Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.WHITE);
+        imagePanel.add(imageLabel);
+        mainPanel.add(imagePanel, BorderLayout.NORTH);
+
+        add(mainPanel);
         setVisible(true);
     }
 }

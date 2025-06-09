@@ -1,59 +1,59 @@
-	package taskFinal2Bimestre;
-
-	import java.awt.Image;
+package taskFinal2Bimestre;
 
 import javax.swing.*;
-	import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 
-	public class ListagemOrcamentoFrame extends JFrame {
-	    private SistemaFinanceiro sistema;
+public class ListagemOrcamentoFrame extends JFrame {
+    private SistemaFinanceiro sistema;
 
-	    public ListagemOrcamentoFrame(SistemaFinanceiro sistema) {
-	        this.sistema = sistema;
+    public ListagemOrcamentoFrame(SistemaFinanceiro sistema) {
+        this.sistema = sistema;
 
-	        setTitle("Listagem de Orçamentos");
-	        setSize(400, 600);
-	        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-	        setLayout(null);
-	        // Adicionando uma imagem obrigatória no JFrame
-	        ImageIcon originalIcon = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconOrcamento.png");
-	        Image img = originalIcon.getImage();
+        setTitle("Listagem de Orçamentos");
+        setSize(420, 350);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-	        int imgW = originalIcon.getIconWidth();
-	        int imgH = originalIcon.getIconHeight();
+        JPanel mainPanel = new JPanel(new BorderLayout(10, 10));
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(15, 15, 15, 15));
+        mainPanel.setBackground(Color.WHITE);
 
-	        int maxW = 150;
-	        int maxH = 100;
+        String[] colunas = { "Categoria", "Limite" };
+        DefaultTableModel modelo = new DefaultTableModel(colunas, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
 
-	        double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
-	        int newW = (int) (imgW * scale);
-	        int newH = (int) (imgH * scale);
+        for (Categoria c : sistema.getCategorias()) {
+            modelo.addRow(new Object[]{c.getNome(), String.format("R$ %.2f", c.getLimite())});
+        }
 
-	        Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
-	        ImageIcon scaledIcon = new ImageIcon(scaledImg);
+        JTable tabela = new JTable(modelo);
+        tabela.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        tabela.getTableHeader().setFont(new Font("Segoe UI", Font.BOLD, 15));
+        tabela.setRowHeight(25);
+        JScrollPane scroll = new JScrollPane(tabela);
 
-	        int x = (600 - newW) / 2;  // centraliza horizontalmente com tamanho fixo do JFrame
-	        int y = 600 - newH - 50;   // desce para quase o final da janela
+        mainPanel.add(scroll, BorderLayout.CENTER);
 
-	        JLabel imageLabel = new JLabel(scaledIcon);
-	        imageLabel.setBounds(x, y, newW, newH);
-	        add(imageLabel);
+        // Imagem no rodapé
+        ImageIcon originalIcon = new ImageIcon(
+            "D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconOrcamento.png");
+        Image img = originalIcon.getImage();
+        int maxW = 150, maxH = 100;
+        double scale = Math.min((double) maxW / originalIcon.getIconWidth(), (double) maxH / originalIcon.getIconHeight());
+        Image scaledImg = img.getScaledInstance((int)(originalIcon.getIconWidth()*scale), (int)(originalIcon.getIconHeight()*scale), Image.SCALE_SMOOTH);
+        JLabel imageLabel = new JLabel(new ImageIcon(scaledImg));
+        JPanel imagePanel = new JPanel();
+        imagePanel.setBackground(Color.WHITE);
+        imagePanel.add(imageLabel);
 
-	        String[] colunas = {"Categoria", "Limite"};
-	        DefaultTableModel modelo = new DefaultTableModel(colunas, 0);
+        mainPanel.add(imagePanel, BorderLayout.SOUTH);
 
-	        for (Categoria c : sistema.getCategorias()) {
-	            Object[] linha = {c.getNome(), c.getLimite()};
-	            modelo.addRow(linha);
-	        }
-
-	        JTable tabela = new JTable(modelo);
-	        JScrollPane scroll = new JScrollPane(tabela);
-	        scroll.setBounds(20, 20, 350, 200);
-	        add(scroll);
-
-	        setVisible(true);
-	    }
-	}
-
-
+        add(mainPanel);
+        setVisible(true);
+    }
+}
