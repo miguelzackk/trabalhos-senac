@@ -10,7 +10,7 @@ public class DashboardFrame extends JFrame {
         this.sistema = sistema;
 
         setTitle("Dashboard - Sistema Financeiro");
-        setSize(600, 600);
+        setSize(600, 800);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
