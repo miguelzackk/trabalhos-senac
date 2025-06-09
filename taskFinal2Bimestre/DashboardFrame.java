@@ -18,7 +18,7 @@ public class DashboardFrame extends JFrame {
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
         mainPanel.setBackground(Color.WHITE);
 
-        // Imagem topo centralizada
+
         ImageIcon originalIcon = new ImageIcon(
                 "D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconHome.jpg");
         Image img = originalIcon.getImage();
