@@ -1,23 +1,43 @@
 package taskFinal2Bimestre;
 
-import java.awt.Image;
-
 import javax.swing.*;
+import java.awt.*;
 
 public class LoginFrame extends JFrame {
     public LoginFrame(SistemaFinanceiro sistema) {
         setTitle("Login");
-        setSize(300, 200);
+        setSize(300, 400); // Altura aumentada para caber imagem original
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
 
-        ImageIcon iconOriginal = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\1.png");
-        Image img = iconOriginal.getImage();
-        Image imgRedimensionada = img.getScaledInstance(120, 60, Image.SCALE_SMOOTH);
-        ImageIcon iconRedimensionado = new ImageIcon(imgRedimensionada);
+        // Carregar imagem sem redimensionamento manual
+     // Carregar imagem com redimensionamento proporcional
+        ImageIcon originalIcon = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconLogin.jpg");
+        Image img = originalIcon.getImage();
 
-        JLabel imageLabel = new JLabel(iconRedimensionado);
-        imageLabel.setBounds(10, 150, 120, 60); 
+        // Dimensões originais
+        int imgW = originalIcon.getIconWidth();
+        int imgH = originalIcon.getIconHeight();
+
+        // Limites máximos
+        int maxW = 150;
+        int maxH = 100;
+
+        // Escala proporcional
+        double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
+        int newW = (int) (imgW * scale);
+        int newH = (int) (imgH * scale);
+
+        // Redimensiona imagem
+        Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+        // Centralizar horizontalmente
+        int x = (getWidth() - newW) / 2;
+
+        // Posicionar imagem
+        JLabel imageLabel = new JLabel(scaledIcon);
+        imageLabel.setBounds(x, 240, newW, newH); // Parte inferior
         add(imageLabel);
 
 
@@ -30,15 +50,15 @@ public class LoginFrame extends JFrame {
         add(userField);
 
         JLabel passLabel = new JLabel("Senha:");
-        passLabel.setBounds(10, 40, 80, 25);
+        passLabel.setBounds(10, 50, 80, 25);
         add(passLabel);
 
         JPasswordField passField = new JPasswordField();
-        passField.setBounds(100, 40, 160, 25);
+        passField.setBounds(100, 50, 160, 25);
         add(passField);
 
         JButton loginBtn = new JButton("Login");
-        loginBtn.setBounds(100, 80, 80, 25);
+        loginBtn.setBounds(100, 90, 80, 25);
         add(loginBtn);
 
         loginBtn.addActionListener(e -> {

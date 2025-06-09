@@ -1,6 +1,8 @@
 package taskFinal2Bimestre;
 
 import javax.swing.*;
+
+import java.awt.Image;
 import java.awt.event.*;
 import java.util.Date;
 
@@ -12,14 +14,36 @@ public class CadastroDespesaFrame extends JFrame {
     public CadastroDespesaFrame(SistemaFinanceiro sistema) {
         this.sistema = sistema;
         setTitle("Cadastro de Despesa");
-        setSize(300, 300);
+        setSize(300, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
 
-        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png")
-                .getImage().getScaledInstance(100, 50, java.awt.Image.SCALE_SMOOTH));
-        JLabel imageLabel = new JLabel(icon);
-        imageLabel.setBounds(10, 200, 100, 50);
+        ImageIcon originalIcon = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png");
+        Image img = originalIcon.getImage();
+
+        // Dimensões originais
+        int imgW = originalIcon.getIconWidth();
+        int imgH = originalIcon.getIconHeight();
+
+        // Limites máximos
+        int maxW = 150;
+        int maxH = 100;
+
+        // Escala proporcional
+        double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
+        int newW = (int) (imgW * scale);
+        int newH = (int) (imgH * scale);
+
+        // Redimensiona imagem
+        Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+        // Centralizar horizontalmente
+        int x = (getWidth() - newW) / 2;
+
+        // Posicionar imagem
+        JLabel imageLabel = new JLabel(scaledIcon);
+        imageLabel.setBounds(x, 240, newW, newH); // Parte inferior
         add(imageLabel);
 
         JLabel categoriaLabel = new JLabel("Categoria:");

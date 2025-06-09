@@ -2,6 +2,8 @@ package taskFinal2Bimestre;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+
+import java.awt.Image;
 import java.awt.event.*;
 
 public class ListagemDespesaFrame extends JFrame {
@@ -13,14 +15,31 @@ public class ListagemDespesaFrame extends JFrame {
         this.sistema = sistema;
 
         setTitle("Listagem de Despesas");
-        setSize(500, 400);
+        setSize(500, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
         // Adicionando uma imagem obrigatória no JFrame
-        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png")
-                .getImage().getScaledInstance(100, 50, java.awt.Image.SCALE_SMOOTH));
-        JLabel imageLabel = new JLabel(icon);
-        imageLabel.setBounds(10, 200, 100, 50);
+        ImageIcon originalIcon = new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png");
+        Image img = originalIcon.getImage();
+
+        int imgW = originalIcon.getIconWidth();
+        int imgH = originalIcon.getIconHeight();
+
+        int maxW = 150;
+        int maxH = 100;
+
+        double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
+        int newW = (int) (imgW * scale);
+        int newH = (int) (imgH * scale);
+
+        Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+        ImageIcon scaledIcon = new ImageIcon(scaledImg);
+
+        int x = (600 - newW) / 2;  // centraliza horizontalmente com tamanho fixo do JFrame
+        int y = 600 - newH - 50;   // desce para quase o final da janela
+
+        JLabel imageLabel = new JLabel(scaledIcon);
+        imageLabel.setBounds(x, y, newW, newH);
         add(imageLabel);
 
         String[] colunas = {"Categoria", "Valor", "Data"};

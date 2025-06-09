@@ -1,61 +1,85 @@
 package taskFinal2Bimestre;
 
+import java.awt.Image;
+
 import javax.swing.*;
 
 public class CadastroOrcamentoFrame extends JFrame {
-    private SistemaFinanceiro sistema;
+	private SistemaFinanceiro sistema;
 
-    public CadastroOrcamentoFrame(SistemaFinanceiro sistema) {
-        this.sistema = sistema;
-        setTitle("Cadastro de Orçamento");
-        setSize(300, 300);
-        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLayout(null);
+	public CadastroOrcamentoFrame(SistemaFinanceiro sistema) {
+		this.sistema = sistema;
+		setTitle("Cadastro de Orçamento");
+		setSize(300, 400);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setLayout(null);
 
-        ImageIcon icon = new ImageIcon(new ImageIcon("D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconDespesas.png")
-                .getImage().getScaledInstance(100, 50, java.awt.Image.SCALE_SMOOTH));
-        JLabel imageLabel = new JLabel(icon);
-        imageLabel.setBounds(10, 200, 100, 50);
-        add(imageLabel);
+		ImageIcon originalIcon = new ImageIcon(
+				"D:\\Senac\\3° Ano\\Documentos\\Eclipse\\trabalhosSenac\\src\\img\\iconOrcamento.png");
+		Image img = originalIcon.getImage();
 
-        JLabel categoriaLabel = new JLabel("Categoria:");
-        categoriaLabel.setBounds(10, 20, 80, 25);
-        add(categoriaLabel);
+		// Dimensões originais
+		int imgW = originalIcon.getIconWidth();
+		int imgH = originalIcon.getIconHeight();
 
-        JComboBox<String> categoriaBox = new JComboBox<>();
-        for (Categoria c : sistema.getCategorias()) {
-            categoriaBox.addItem(c.getNome());
-        }
-        categoriaBox.setBounds(100, 20, 160, 25);
-        add(categoriaBox);
+		// Limites máximos
+		int maxW = 150;
+		int maxH = 100;
 
-        JLabel limiteLabel = new JLabel("Limite:");
-        limiteLabel.setBounds(10, 60, 80, 25);
-        add(limiteLabel);
+		// Escala proporcional
+		double scale = Math.min((double) maxW / imgW, (double) maxH / imgH);
+		int newW = (int) (imgW * scale);
+		int newH = (int) (imgH * scale);
 
-        JTextField limiteField = new JTextField();
-        limiteField.setBounds(100, 60, 160, 25);
-        add(limiteField);
+		// Redimensiona imagem
+		Image scaledImg = img.getScaledInstance(newW, newH, Image.SCALE_SMOOTH);
+		ImageIcon scaledIcon = new ImageIcon(scaledImg);
 
-        JButton salvarBtn = new JButton("Salvar");
-        salvarBtn.setBounds(100, 100, 80, 25);
-        add(salvarBtn);
+		// Centralizar horizontalmente
+		int x = (getWidth() - newW) / 2;
 
-        salvarBtn.addActionListener(e -> {
-            String categoriaNome = (String) categoriaBox.getSelectedItem();
-            double limite = Double.parseDouble(limiteField.getText());
+		// Posicionar imagem
+		JLabel imageLabel = new JLabel(scaledIcon);
+		imageLabel.setBounds(x, 240, newW, newH); // Parte inferior
+		add(imageLabel);
 
-            Categoria categoria = sistema.getCategorias().stream()
-                    .filter(c -> c.getNome().equals(categoriaNome))
-                    .findFirst().orElse(null);
+		JLabel categoriaLabel = new JLabel("Categoria:");
+		categoriaLabel.setBounds(10, 20, 80, 25);
+		add(categoriaLabel);
 
-            if (categoria != null) {
-                categoria.setLimite(limite);
-                JOptionPane.showMessageDialog(null, "Limite atualizado!");
-                dispose();
-            }
-        });
+		JComboBox<String> categoriaBox = new JComboBox<>();
+		for (Categoria c : sistema.getCategorias()) {
+			categoriaBox.addItem(c.getNome());
+		}
+		categoriaBox.setBounds(100, 20, 160, 25);
+		add(categoriaBox);
 
-        setVisible(true);
-    }
+		JLabel limiteLabel = new JLabel("Limite:");
+		limiteLabel.setBounds(10, 60, 80, 25);
+		add(limiteLabel);
+
+		JTextField limiteField = new JTextField();
+		limiteField.setBounds(100, 60, 160, 25);
+		add(limiteField);
+
+		JButton salvarBtn = new JButton("Salvar");
+		salvarBtn.setBounds(100, 100, 80, 25);
+		add(salvarBtn);
+
+		salvarBtn.addActionListener(e -> {
+			String categoriaNome = (String) categoriaBox.getSelectedItem();
+			double limite = Double.parseDouble(limiteField.getText());
+
+			Categoria categoria = sistema.getCategorias().stream().filter(c -> c.getNome().equals(categoriaNome))
+					.findFirst().orElse(null);
+
+			if (categoria != null) {
+				categoria.setLimite(limite);
+				JOptionPane.showMessageDialog(null, "Limite atualizado!");
+				dispose();
+			}
+		});
+
+		setVisible(true);
+	}
 }
